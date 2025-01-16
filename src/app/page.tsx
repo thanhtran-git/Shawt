@@ -37,20 +37,20 @@ export default function Home() {
       <nav className="bg-pink-500 text-white shadow-md py-4">
         <div className="max-w-7xl mx-auto px-6 flex justify-between items-center">
           <div className="text-xl font-bold">
-            <a href="#" className="hover:text-pink-200">URL Shortener</a>
+            <a href="#" className="hover:text-pink-200">Shortify</a>
           </div>
           <div className="space-x-4">
             <a
               href="/signup"
               className="hover:bg-pink-600 px-4 py-2 rounded-md transition duration-200"
             >
-              Sign Up
+              Registrierung
             </a>
             <a
               href="/login"
               className="hover:bg-pink-600 px-4 py-2 rounded-md transition duration-200"
             >
-              Login
+              Anmelden
             </a>
           </div>
         </div>
@@ -80,7 +80,7 @@ export default function Home() {
                 className="flex-1 p-2 border border-gray-300 rounded-l-md focus:outline-none focus:ring-2 focus:ring-pink-500"
               />
               <button
-                type="submit" // Specify the button type as "submit"
+                type="submit" 
                 className="bg-pink-500 text-white px-4 py-2 rounded-r-md hover:bg-pink-600 focus:outline-none focus:ring-2 focus:ring-pink-500"
               >
                 Kürzen
