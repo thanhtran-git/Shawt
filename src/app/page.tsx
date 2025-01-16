@@ -33,7 +33,6 @@ export default function Home() {
 
   return (
     <>
-      {/* Navbar */}
       <nav className="bg-pink-500 text-white shadow-md py-4">
         <div className="max-w-7xl mx-auto px-6 flex justify-between items-center">
           <div className="text-xl font-bold">
@@ -56,7 +55,6 @@ export default function Home() {
         </div>
       </nav>
 
-      {/* Main Content */}
       <div className="flex justify-center items-center min-h-screen bg-gray-100">
         <div className="bg-white p-8 rounded-lg shadow-md w-full max-w-md">
           <h1 className="text-2xl font-semibold mb-4 text-center">URL Shortener</h1>
@@ -88,7 +86,6 @@ export default function Home() {
             </div>
           </form>
 
-          {/* Display the Shortened URL */}
           {shortenedUrl && (
             <div className="text-center mt-4">
               <p className="text-xl font-semibold">Shortened URL:</p>
