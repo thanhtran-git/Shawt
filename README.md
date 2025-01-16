@@ -1,7 +1,5 @@
 # Shortify Your URL
 
-A simple and efficient URL shortener web application that allows users to shorten long URLs for easier sharing. This app is built using Next.js and Tailwind, and it's designed to be lightweight, fast, and easy to use.
-
 ## Features
 
 - Shorten long URLs
