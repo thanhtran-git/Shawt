@@ -1,8 +1,8 @@
 services:
   dev:
     build:
-      context: ./.devcontainer
-      dockerfile: Dockerfile
+      context: .
+      dockerfile: .devcontainer/Dockerfile
     entrypoint: /bin/bash
     command: -i -c "while :; do sleep 10; done"
     volumes:
