@@ -2,13 +2,13 @@
     "sqltools.connections": [
         {
             "previewLimit": 50,
-            "server": "localhost",
+            "server": "db",
             "port": 5432,
+            "name": "Development DB2",
             "driver": "PostgreSQL",
-            "name": "drizzleDB",
-            "database": "postgres",
-            "username": "postgres",
-            "password": "mypassword"
+            "database": "devDB",
+            "username": "dieter",
+            "password": "password"
         }
     ]
 }

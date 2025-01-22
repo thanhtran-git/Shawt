@@ -15,17 +15,18 @@
 		  "workbench.colorTheme": "September Steel",
 		  "sqltools.connections": [
 			{
-			  "name": "Development DB",
+			  "name": "Development DB2",
 			  "driver": "PostgreSQL",
-			  "server": "${localEnv:PGHOST}",
+			  "server": "${containerEnv:POSTGRES_HOST}",	
 			  "port": 5432,
-			  "database": "${localEnv:PGDATABASE}",
-			  "username": "${localEnv:PGUSER}",
-			  "password": "${localEnv:PGPASSWORD}"
+			  "database": "${containerEnv:POSTGRES_DB}",
+			  "username": "${containerEnv:POSTGRES_USER}",
+			  "password": "${containerEnv:POSTGRES_PASSWORD}"
 			}
 		  ]
 		}
 	  }
 	},
-	"postCreateCommand": "npm install"
+	"postCreateCommand": "npm install",
+	"forwardPorts": [5432]
   }
