@@ -1,34 +1,68 @@
-'use client'
+'use client';
 
-import { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { isValidUrl, generateShortId } from './utils/utils';
 
 export default function Home() {
-  const [url, setUrl] = useState('');
+  const [urlList, setUrlList] = useState([]);
   const [shortenedUrl, setShortenedUrl] = useState('');
+  const [formData, setFormData] = useState({
+    longUrl: '',
+  });
   const [error, setError] = useState('');
+  
+  useEffect(() => {
+    fetchUrls();
+  }, []);
 
-  const [existingShortLinks, setExistingShortLinks] = useState<string[]>([]);
+  const fetchUrls = async () => {
+    try {
+      const response = await fetch('/api/urls');
+      if (response.ok) {
+        const data = await response.json();
+        setUrlList(data);
+      } else {
+        console.error('Failed to fetch URLs');
+      }
+    } catch (error) {
+      console.error('Error fetching URLs:', error);
+    }
+  };
 
-  const handleSubmit = () => {
-    if (!isValidUrl(url)) {
-      setError('Gib eine valide URL ein');
-      setShortenedUrl('');
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+
+    if (!isValidUrl(formData.longUrl)) {
+      setError('Bitte gib eine gültige URL ein (z.B. https://example.com)');
       return;
     }
 
-    setError('');
-    
-    let shortId = generateShortId();
-    while (existingShortLinks.includes(shortId)) {
-      shortId = generateShortId(); 
+    const shortId = generateShortId();
+    const shortUrl = `HOSTER/${shortId}`;
+    setShortenedUrl(shortUrl);
+
+    try {
+      const response = await fetch('/api/urls', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          longUrl: formData.longUrl,
+          shortUrl,
+        }),
+      });
+
+      if (response.ok) {
+        setFormData({ longUrl: '' });
+        fetchUrls();
+      } else {
+        const errorData = await response.json();
+        console.error('Error:', errorData.error);
+      }
+    } catch (error) {
+      console.error('Error creating URL:', error);
     }
-
-    setExistingShortLinks([...existingShortLinks, shortId]);
-
-    const shortLink = `HOSTER/${shortId}`;
-
-    setShortenedUrl(shortLink);
   };
 
   return (
@@ -59,26 +93,21 @@ export default function Home() {
         <div className="bg-white p-8 rounded-lg shadow-md w-full max-w-md">
           <h1 className="text-2xl font-semibold mb-4 text-center">URL Shortener</h1>
 
-
           {error && <p className="text-red-500 text-center mb-4">{error}</p>}
 
-          <form
-            onSubmit={(e) => {
-              e.preventDefault(); 
-              handleSubmit(); 
-            }}
-            className="mb-4"
-          >
+          <form onSubmit={handleSubmit} className="mb-4">
             <div className="flex">
               <input
                 type="text"
-                value={url}
-                onChange={(e) => setUrl(e.target.value)}
+                value={formData.longUrl}
+                onChange={(e) =>
+                  setFormData({ ...formData, longUrl: e.target.value })
+                }
                 placeholder="URL eingeben"
                 className="flex-1 p-2 border border-gray-300 rounded-l-md focus:outline-none focus:ring-2 focus:ring-pink-500"
               />
               <button
-                type="submit" 
+                type="submit"
                 className="bg-pink-500 text-white px-4 py-2 rounded-r-md hover:bg-pink-600 focus:outline-none focus:ring-2 focus:ring-pink-500"
               >
                 Kürzen
@@ -89,11 +118,42 @@ export default function Home() {
           {shortenedUrl && (
             <div className="text-center mt-4">
               <p className="text-xl font-semibold">Shortened URL:</p>
-              <a href={shortenedUrl} className="text-pink-500 hover:underline" target="_blank" rel="noopener noreferrer">
+              <a
+                href={shortenedUrl}
+                className="text-pink-500 hover:underline"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
                 {shortenedUrl}
               </a>
             </div>
           )}
+
+          <div className="space-y-4 mt-8">
+            <h2 className="text-xl font-bold">Saved URLs</h2>
+            {urlList.map((url: { id: number; longUrl: string; shortUrl: string }) => (
+              <div
+                key={url.id}
+                className="border p-1 rounded flex justify-between items-center"
+              >
+                <div>
+                  <p>
+                    <strong>Short URL:</strong>{' '}
+                    <a
+                      href={url.shortUrl}
+                      target="_blank"
+                      className="text-pink-500 hover:underline"
+                    >
+                      {url.shortUrl}
+                    </a>
+                  </p>
+                  <p>
+                    <strong>Long URL:</strong> {url.longUrl}
+                  </p>
+                </div>
+              </div>
+            ))}
+          </div>
         </div>
       </div>
     </>
