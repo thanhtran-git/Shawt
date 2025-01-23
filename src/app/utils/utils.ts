@@ -1,7 +1,8 @@
 export function isValidUrl(input: string): boolean {
-    const regex = /^(https?:\/\/)?([\w\d-]+\.)+[a-z]{2,6}(\/[\w\d-]+)*\/?$/i;
-    return regex.test(input);
-  };
+  const regex = /^(https?:\/\/)?([a-z0-9-]+\.)+[a-z]{2,6}(\/[\w\d-]*)*\/?$/i;
+  return regex.test(input) && (input.startsWith("http://") || input.startsWith("https://"));
+}
+
   
   export function generateShortId(): string {
     const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
