@@ -6,11 +6,11 @@ const db = drizzle(process.env.POSTGRES_URL!);
 
 export async function GET() {
   try {
-    const messages = await db.select().from(urlsTable);
-    return NextResponse.json(messages);
+    const urlList = await db.select().from(urlsTable);
+    return NextResponse.json(urlList);
   } catch (error) {
-    console.error('Error in GET:', error); // Log the error
-    return NextResponse.json({ error: 'Failed to fetch messages' }, { status: 500 });
+    console.error('Error in GET:', error);
+    return NextResponse.json({ error: 'Failed to fetch URL List' }, { status: 500 });
   }
 }
 
@@ -19,9 +19,9 @@ export async function POST(request: Request) {
     const body = await request.json();
     console.log('Request body:', body);
     await db.insert(urlsTable).values(body);
-    return NextResponse.json({ message: 'Message created successfully' });
+    return NextResponse.json({ message: 'URL successfully inserted into database' });
   } catch (error) {
-    console.error('Error in POST:', error); // Log the error
-    return NextResponse.json({ error: 'Failed to create message' }, { status: 500 });
+    console.error('Error in POST:', error); 
+    return NextResponse.json({ error: 'Failed to save URL into database' }, { status: 500 });
   }
 }
