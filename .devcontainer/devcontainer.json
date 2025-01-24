@@ -17,11 +17,11 @@
 			{
 			  "name": "Development DB2",
 			  "driver": "PostgreSQL",
-			  "server": "${localEnv:POSTGRES_HOST}",	
+			  "server": "${containerEnv:POSTGRES_HOST}",	
 			  "port": 5432,
-			  "database": "${localEnv:POSTGRES_DB}",
-			  "username": "${localEnv:POSTGRES_USER}",
-			  "password": "${localEnv:POSTGRES_PASSWORD}"
+			  "database": "${containerEnv:POSTGRES_DB}",
+			  "username": "${containerEnv:POSTGRES_USER}",
+			  "password": "${containerEnv:POSTGRES_PASSWORD}"
 			}
 		  ]
 		}
