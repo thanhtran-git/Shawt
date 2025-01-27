@@ -5,7 +5,7 @@ import { eq } from "drizzle-orm";
 
 const db = drizzle(process.env.POSTGRES_URL!);
 
-export async function GET(request: Request) {
+export async function GET() {
   try {
     const urlList = await db.select().from(urlsTable);
     return NextResponse.json(urlList);
