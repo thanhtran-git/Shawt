@@ -2,7 +2,6 @@
 
 import React, { useState, useEffect } from 'react';
 import { isValidUrl, generateShortId } from './utils/utils'
-import { deleteItemAction } from "./actions"
 
 export default function Home() {
   const [urlList, setUrlList] = useState([]);
