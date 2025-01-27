@@ -170,7 +170,13 @@ export default function Home() {
                   <p>
                     <strong>Long URL:</strong> {url.longUrl}
                   </p>
-                </div>
+                  </div>
+                    <button
+                      onClick={() => handleDelete(url.id)}
+                      className="bg-red-500 text-white px-2 py-1 rounded hover:bg-red-600 focus:outline-none"
+                    >
+                      Delete
+                    </button>
               </div>
             ))}
           </div>
