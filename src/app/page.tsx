@@ -1,7 +1,8 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import { isValidUrl, generateShortId } from './utils/utils';
+import { isValidUrl, generateShortId } from './utils/utils'
+import { deleteItemAction } from "./actions"
 
 export default function Home() {
   const [urlList, setUrlList] = useState([]);
@@ -36,9 +37,9 @@ export default function Home() {
       setError('Bitte gib eine gültige URL ein (z.B. https://example.com)');
       return;
     }
-
+    setError("")
     const shortId = generateShortId();
-    const shortUrl = `HOSTER/${shortId}`;
+    const shortUrl = `http://localhost:3000/${shortId}`;
     setShortenedUrl(shortUrl);
 
     try {
@@ -64,6 +65,25 @@ export default function Home() {
       console.error('Error creating URL:', error);
     }
   };
+
+  const handleDelete = async (id: number) => {
+    try {
+      const response = await fetch(`/api/urls?id=${id}`, {
+        method: 'DELETE',
+      });
+  
+      if (response.ok) {
+        console.log(`URL with ID ${id} deleted successfully.`);
+        fetchUrls();
+      } else {
+        const errorData = await response.json();
+        console.error('Error deleting URL:', errorData.error);
+      }
+    } catch (error) {
+      console.error('Error deleting URL:', error);
+    }
+  };
+  
 
   return (
     <>
@@ -140,7 +160,7 @@ export default function Home() {
                   <p>
                     <strong>Short URL:</strong>{' '}
                     <a
-                      href={url.shortUrl}
+                      href={url.longUrl}
                       target="_blank"
                       className="text-pink-500 hover:underline"
                     >
