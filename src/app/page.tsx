@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { isValidUrl, generateShortId } from './utils/utils';
+import Link from 'next/link';
 
 export default function Home() {
   const [urlList, setUrlList] = useState([]);
@@ -38,7 +39,7 @@ export default function Home() {
     }
 
     const shortId = generateShortId();
-    const shortUrl = `HOSTER/${shortId}`;
+    const shortUrl = `http://localhost:3000/${shortId}`;
     setShortenedUrl(shortUrl);
 
     try {
@@ -50,6 +51,7 @@ export default function Home() {
         body: JSON.stringify({
           longUrl: formData.longUrl,
           shortUrl,
+          shortId
         }),
       });
 
@@ -118,20 +120,20 @@ export default function Home() {
           {shortenedUrl && (
             <div className="text-center mt-4">
               <p className="text-xl font-semibold">Shortened URL:</p>
-              <a
+              <Link
                 href={shortenedUrl}
                 className="text-pink-500 hover:underline"
                 target="_blank"
                 rel="noopener noreferrer"
               >
                 {shortenedUrl}
-              </a>
+              </Link>
             </div>
           )}
 
           <div className="space-y-4 mt-8">
             <h2 className="text-xl font-bold">Saved URLs</h2>
-            {urlList.map((url: { id: number; longUrl: string; shortUrl: string }) => (
+            {urlList.map((url: { id: number; longUrl: string; shortUrl: string, shortId: string }) => (
               <div
                 key={url.id}
                 className="border p-1 rounded flex justify-between items-center"
@@ -139,13 +141,13 @@ export default function Home() {
                 <div>
                   <p>
                     <strong>Short URL:</strong>{' '}
-                    <a
-                      href={url.shortUrl}
+                    <Link
+                      href={`/${url.shortId}`}
                       target="_blank"
                       className="text-pink-500 hover:underline"
                     >
                       {url.shortUrl}
-                    </a>
+                    </Link>
                   </p>
                   <p>
                     <strong>Long URL:</strong> {url.longUrl}
