@@ -37,7 +37,7 @@ export default function Home() {
       setError('Bitte gib eine gültige URL ein (z.B. https://example.com)');
       return;
     }
-
+    setError("")
     const shortId = generateShortId();
     const shortUrl = `http://localhost:3000/${shortId}`;
     setShortenedUrl(shortUrl);
@@ -66,6 +66,25 @@ export default function Home() {
       console.error('Error creating URL:', error);
     }
   };
+
+  const handleDelete = async (id: number) => {
+    try {
+      const response = await fetch(`/api/urls?id=${id}`, {
+        method: 'DELETE',
+      });
+  
+      if (response.ok) {
+        console.log(`URL with ID ${id} deleted successfully.`);
+        fetchUrls();
+      } else {
+        const errorData = await response.json();
+        console.error('Error deleting URL:', errorData.error);
+      }
+    } catch (error) {
+      console.error('Error deleting URL:', error);
+    }
+  };
+  
 
   return (
     <>
@@ -152,7 +171,13 @@ export default function Home() {
                   <p>
                     <strong>Long URL:</strong> {url.longUrl}
                   </p>
-                </div>
+                  </div>
+                    <button
+                      onClick={() => handleDelete(url.id)}
+                      className="bg-red-500 text-white px-2 py-1 rounded hover:bg-red-600 focus:outline-none"
+                    >
+                      Delete
+                    </button>
               </div>
             ))}
           </div>
