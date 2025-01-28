@@ -19,9 +19,9 @@ export default async function RedirectPage({ params }: RedirectPageProps) {
       .from(urlsTable)
       .where(eq(urlsTable.shortId, String(shortId)))
       .limit(1);
-      
+
     destination = urlEntry?.longUrl; 
-  } catch (error) {
+  } catch {
     console.error(`No URL found for shortId: ${shortId}`);
     redirect("/404")
   }
