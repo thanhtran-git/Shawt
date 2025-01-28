@@ -16,6 +16,10 @@ export default function Home() {
     fetchUrls();
   }, []);
 
+  const buildShortUrl = (shortId: string) => { 
+    return `${process.env.NEXT_PUBLIC_BASE_URL}/${shortId}`
+  }
+
   const fetchUrls = async () => {
     try {
       const response = await fetch('/api/urls');
@@ -39,7 +43,7 @@ export default function Home() {
     }
     setError("")
     const shortId = generateShortId();
-    const shortUrl = `http://localhost:3000/${shortId}`;
+    const shortUrl = buildShortUrl(shortId);
     setShortenedUrl(shortUrl);
 
     try {
@@ -111,7 +115,7 @@ export default function Home() {
       </nav>
 
       <div className="flex justify-center items-center min-h-screen bg-gray-100">
-        <div className="bg-white p-8 rounded-lg shadow-md w-full max-w-md">
+        <div className="bg-white p-8 rounded-lg shadow-md w-full max-w-2xl">
           <h1 className="text-2xl font-semibold mb-4 text-center">URL Shortener</h1>
 
           {error && <p className="text-red-500 text-center mb-4">{error}</p>}
@@ -152,7 +156,7 @@ export default function Home() {
 
           <div className="space-y-4 mt-8">
             <h2 className="text-xl font-bold">Saved URLs</h2>
-            {urlList.map((url: { id: number; longUrl: string; shortUrl: string, shortId: string }) => (
+            {urlList.map((url: { id: number; longUrl: string; shortUrl: string, shortId: string, views: number }) => (
               <div
                 key={url.id}
                 className="border p-1 rounded flex justify-between items-center"
@@ -172,12 +176,17 @@ export default function Home() {
                     <strong>Long URL:</strong> {url.longUrl}
                   </p>
                   </div>
+                  <div className='flex items-center gap-3'>
                     <button
                       onClick={() => handleDelete(url.id)}
                       className="bg-red-500 text-white px-2 py-1 rounded hover:bg-red-600 focus:outline-none"
                     >
                       Delete
                     </button>
+                    <div>
+                     {url.views} Views
+                    </div>
+                  </div>  
               </div>
             ))}
           </div>
