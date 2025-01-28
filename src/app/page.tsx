@@ -75,18 +75,18 @@ export default function Home() {
             <a href="#" className="hover:text-pink-200">Shortify</a>
           </div>
           <div className="space-x-4">
-            <a
+            <Link
               href="/signup"
               className="hover:bg-pink-600 px-4 py-2 rounded-md transition duration-200"
             >
               Registrierung
-            </a>
-            <a
+            </Link>
+            <Link
               href="/login"
               className="hover:bg-pink-600 px-4 py-2 rounded-md transition duration-200"
             >
               Anmelden
-            </a>
+            </Link>
           </div>
         </div>
       </nav>
