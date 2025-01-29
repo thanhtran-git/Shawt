@@ -167,7 +167,7 @@ export default function Home() {
                   <p>
                     <strong>Short URL:</strong>{' '}
                     <Link
-                      href={`/${url.shortId}`}
+                      href={`${url.shortUrl}`}
                       target="_blank"
                       className="text-pink-500 hover:underline"
                     >
