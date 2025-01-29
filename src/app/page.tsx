@@ -183,10 +183,7 @@ export default function Home() {
                     >
                       Delete
                     </button>
-                    <div>
-                     {url.views} Views
-                    </div>
-                  </div>  
+                  </div>
               </div>
             ))}
           </div>
