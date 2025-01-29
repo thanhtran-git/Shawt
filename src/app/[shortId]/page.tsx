@@ -19,6 +19,12 @@ export default async function RedirectPage(props: { params : paramsType}) {
       .limit(1);
 
     destination = urlEntry?.longUrl; 
+
+    await db
+    .update(urlsTable)
+    .set({ views: urlEntry.views + 1})
+    .where(eq(urlsTable.shortId, shortId));
+
   } catch {
     console.error(`No URL found for shortId: ${shortId}`);
     redirect("/404")
@@ -27,5 +33,8 @@ export default async function RedirectPage(props: { params : paramsType}) {
   if (!destination) {
     return <div>404 URL Not Found.</div>
   }
+
+
+
   redirect(destination);
 }
