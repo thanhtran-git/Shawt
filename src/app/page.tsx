@@ -17,12 +17,13 @@ export default function Home() {
   }, []);
 
   const buildShortUrl = (shortId: string) => { 
-    return `${process.env.NEXT_PUBLIC_BASE_URL}/${shortId}`
+    return `${process.env.NEXT_PUBLIC_BASE_URL}/r/${shortId}`
   }
 
   const fetchUrls = async () => {
     try {
       const response = await fetch('/api/urls');
+      console.log(response)
       if (response.ok) {
         const data = await response.json();
         setUrlList(data);
@@ -156,6 +157,7 @@ export default function Home() {
 
           <div className="space-y-4 mt-8">
             <h2 className="text-xl font-bold">Saved URLs</h2>
+            {urlList.length}
             {urlList.map((url: { id: number; longUrl: string; shortUrl: string, shortId: string, views: number }) => (
               <div
                 key={url.id}
@@ -175,7 +177,7 @@ export default function Home() {
                   <p>
                     <strong>Long URL:</strong> {url.longUrl}
                   </p>
-                  </div>
+                  
                   <div className='flex items-center gap-3'>
                     <button
                       onClick={() => handleDelete(url.id)}
@@ -186,12 +188,13 @@ export default function Home() {
                     <div>
                       {url.views} Views
                     </div>  
+                  </div>
+                </div>
               </div>
-
             ))}
           </div>
         </div>
-      </div>
+      </div> 
     </>
   );
 }
