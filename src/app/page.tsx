@@ -152,7 +152,7 @@ export default function Home() {
 
           <div className="space-y-4 mt-8">
             <h2 className="text-xl font-bold">Saved URLs</h2>
-            {urlList.map((url: { id: number; longUrl: string; shortUrl: string, shortId: string }) => (
+            {urlList.map((url: { id: number; longUrl: string; shortUrl: string, shortId: string, views: number }) => (
               <div
                 key={url.id}
                 className="border p-1 rounded flex justify-between items-center"
@@ -178,7 +178,11 @@ export default function Home() {
                     >
                       Delete
                     </button>
+                    <div>
+                      {url.views} Views
+                    </div>  
               </div>
+
             ))}
           </div>
         </div>
