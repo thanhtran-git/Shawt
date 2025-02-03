@@ -25,8 +25,8 @@ export default function UrlCard({ id, shortUrl, longUrl, views, handleDelete }: 
 
   return (
     <Card>
-      <CardContent className="p-6">
-        <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+      <CardContent className="p-4">
+        <div className="flex flex-col md:flex-row justify-between items-start md:items-center">
           <div className="flex-grow space-y-2">
             <div className="flex items-center space-x-2">
               <span className="font-semibold">Short URL:</span>
