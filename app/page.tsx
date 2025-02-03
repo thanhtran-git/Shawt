@@ -83,8 +83,6 @@ export default function Home() {
 
       if (response.ok) {
         console.log(`URL with ID ${id} deleted successfully.`);
-
-        // Remove deleted shortId from localStorage
         const storedShortIds = JSON.parse(localStorage.getItem('shortIds') || '[]');
         const updatedShortIds = storedShortIds.filter((sid: string) => sid !== shortId);
         localStorage.setItem('shortIds', JSON.stringify(updatedShortIds));
