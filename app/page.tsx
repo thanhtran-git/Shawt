@@ -1,14 +1,15 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import { isValidUrl, generateShortId } from '@/utils/utils';
+import {generateShortId } from '@/utils/utils';
 import Link from 'next/link';
+import { Input } from "@/components/ui/input"
+import { Button } from "@/components/ui/button"
+import UrlCard from  "@/components/UrlCard"
 
 export default function Home() {
   const [urlList, setUrlList] = useState([]);
-  const [shortenedUrl, setShortenedUrl] = useState('');
   const [formData, setFormData] = useState({ longUrl: '' });
-  const [error, setError] = useState('');
 
   useEffect(() => {
     if (typeof window !== 'undefined') {
@@ -43,15 +44,8 @@ export default function Home() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (!isValidUrl(formData.longUrl)) {
-      setError('Bitte gib eine gültige URL ein (z.B. https://example.com)');
-      return;
-    }
-    setError('');
-
     const shortId = generateShortId();
     const shortUrl = buildShortUrl(shortId);
-    setShortenedUrl(shortUrl);
 
     try {
       const response = await fetch('/api/urls', {
@@ -77,7 +71,7 @@ export default function Home() {
     }
   };
 
-  const handleDelete = async (id: number, shortId: string) => {
+  async function handleDelete(id: number, shortId: string) {
     try {
       const response = await fetch(`/api/urls?id=${id}`, { method: 'DELETE' });
 
@@ -99,67 +93,70 @@ export default function Home() {
 
   return (
     <>
-      <div className="flex justify-center items-center min-h-screen bg-gray-100">
-        <div className="bg-white p-8 rounded-lg shadow-md w-full max-w-2xl">
-          <h1 className="text-2xl font-semibold mb-4 text-center">URL Shortener</h1>
-
-          {error && <p className="text-red-500 text-center mb-4">{error}</p>}
-
-          <form onSubmit={handleSubmit} className="mb-4">
-            <div className="flex">
-              <input
-                type="text"
-                value={formData.longUrl}
-                onChange={(e) => setFormData({ ...formData, longUrl: e.target.value })}
-                placeholder="URL eingeben"
-                className="flex-1 p-2 border border-gray-300 rounded-l-md focus:outline-none focus:ring-2 focus:ring-pink-500"
-              />
-              <button
-                type="submit"
-                className="bg-pink-500 text-white px-4 py-2 rounded-r-md hover:bg-pink-600 focus:outline-none focus:ring-2 focus:ring-pink-500"
-              >
-                Kürzen
-              </button>
-            </div>
-          </form>
-
-          {shortenedUrl && (
-            <div className="text-center mt-4">
-              <p className="text-xl font-semibold">Shortened URL:</p>
-              <Link href={shortenedUrl} className="text-pink-500 hover:underline" target="_blank" rel="noopener noreferrer">
-                {shortenedUrl}
-              </Link>
-            </div>
-          )}
-
-          <div className="space-y-4 mt-8">
-            <h2 className="text-xl font-bold">Recent URLs</h2>
-            {urlList.map((url: { id: number; longUrl: string; shortUrl: string; shortId: string; views: number }) => (
-              <div key={url.id} className="border p-2 rounded flex flex-col justify-between">
-                <div>
-                  <p className="font-bold">
-                    Short URL:{" "}
-                    <Link href={`${url.shortUrl}`} target="_blank" className="text-pink-500 hover:underline">
-                      {url.shortUrl}
-                    </Link>
-                  </p>
-                  <p>Long URL: {url.longUrl}</p>
-                </div>
-
-                <div className="flex justify-end items-center gap-3 mt-2">
-                  <div>{url.views} Views</div>
-                  <button
-                    onClick={() => handleDelete(url.id, url.shortId)}
-                    className="bg-red-500 text-white px-2 py-1 rounded hover:bg-red-600 focus:outline-none"
-                  >
-                    Delete
-                  </button>
-                </div>
-              </div>
-            ))}
+    <div className="min-h-screen flex flex-col">
+      <nav className="bg-primary text-primary-foreground p-4">
+        <div className="container mx-auto flex justify-between items-center">
+          <Link href="/" className="text-2xl font-bold">
+            Shrunk
+          </Link>
+          <div className="space-x-4">
+            <Link href="/about" className="hover:underline">
+              About
+            </Link>
+            <Link href="/contact" className="hover:underline">
+              Contact
+            </Link>
           </div>
         </div>
-      </div> 
+      </nav>
+
+      <main className="flex-grow container mx-auto px-4 py-8">
+        <section className="text-center mb-12">
+          <h1 className="text-4xl font-bold mb-4">Shrink Your Links</h1>
+          <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
+            Got a long web address? Just paste your link below, click the button and you are done!
+          </p>
+        </section>
+
+        <section className="max-w-2xl mx-auto mb-12">
+          <form onSubmit={handleSubmit} className="flex flex-col sm:flex-row gap-4">
+            <Input  
+                type="url"
+                value={formData.longUrl}
+                onChange={(e) => setFormData({ ...formData, longUrl: e.target.value })}
+                placeholder="Enter your URL in the format http(s)://example.com"
+                className="flex-grow"
+                required 
+              />
+            <Button type="submit" className="w-full sm:w-auto">
+              Shorten URL
+            </Button>
+          </form>
+        </section>
+
+        <section className="max-w-4xl mx-auto">
+          <h2 className="text-2xl font-semibold mb-4">Your Shortened URLs</h2>
+          <div className="space-y-4">
+            {urlList.map((url: { id: number; longUrl: string; shortUrl: string; shortId: string; views: number }) => (
+              <UrlCard 
+                key={url.id}
+                id={url.id}
+                shortUrl={url.shortUrl}
+                longUrl={url.longUrl}
+                views={url.views}
+                handleDelete={handleDelete}
+            />
+            ))}
+          </div>
+        </section>
+      </main>
+
+      <footer className="bg-muted mt-auto py-4">
+        <div className="container mx-auto text-center text-muted-foreground">
+          © {new Date().getFullYear()} Shrunk. All rights reserved.
+        </div>
+      </footer>
+    </div>
     </>
   );
 }

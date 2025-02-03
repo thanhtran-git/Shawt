@@ -1,11 +1,10 @@
-# Shortify Your URL
+# Shrink Your Links
 
 ## Features
 
 - Shorten long URLs
 - Redirects to the original URL when the shortened URL is accessed
 - User-friendly interface
-- Simple setup and usage
 
 
 ## Installation
