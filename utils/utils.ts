@@ -1,8 +1,13 @@
-  export function generateShortId(): string {
-    const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+  export function generateShortId(number: number
+  ): string {
+    const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
     let result = '';
-    for (let i = 0; i < 6; i++) {
-      result += characters.charAt(Math.floor(Math.random() * characters.length));
+    let randomValues = new Uint32Array(number);
+    crypto.getRandomValues(randomValues);
+  
+    for (let i = 0; i < number; i++) {
+      let randomIndex = randomValues[i] % chars.length;
+      result += chars.charAt(randomIndex);
     }
     return result;
   };

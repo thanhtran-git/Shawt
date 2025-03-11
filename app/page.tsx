@@ -35,7 +35,7 @@ export default function Home() {
   async function handleSubmit(e: React.FormEvent){
     e.preventDefault();
 
-    const shortId = generateShortId();
+    const shortId = generateShortId(6);
     const shortUrl = buildShortUrl(shortId);
 
     try {
